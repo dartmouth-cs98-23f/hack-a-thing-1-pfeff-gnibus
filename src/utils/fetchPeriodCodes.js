@@ -1,5 +1,6 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
+import courseSchedule from '../constants/courseSchedule';
 
 export default async function fetchPeriodCodes(subj, crsenum) {
   const url = 'http://localhost:3000/fetchPeriodCodesProxy'; // Updated URL to use your server-side proxy route
@@ -7,22 +8,6 @@ export default async function fetchPeriodCodes(subj, crsenum) {
   data.append('subj', subj);
   data.append('crsenum', crsenum);
   data.append('classyear', '2008');
-
-  const codes = [
-    '8S',
-    '8L',
-    '9S',
-    '9L',
-    '10',
-    '11',
-    '12',
-    '2',
-    '10A',
-    '11A',
-    '2A',
-    '3A',
-    '6B',
-  ];
 
   try {
     const response = await axios.post(url, data);
@@ -38,7 +23,7 @@ export default async function fetchPeriodCodes(subj, crsenum) {
 
     periodCodeElements.each((index, element) => {
       const periodCode = $(element).text();
-      if (codes.includes(periodCode)) {
+      if (Object.keys(courseSchedule).includes(periodCode)) {
         periodCodes.push(periodCode);
       }
     });
