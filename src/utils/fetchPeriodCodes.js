@@ -1,5 +1,4 @@
 import axios from 'axios';
-import cheerio from 'cheerio';
 import courseSchedule from '../constants/courseSchedule';
 
 export default async function fetchPeriodCodes(subj, crsenum) {
@@ -13,17 +12,17 @@ export default async function fetchPeriodCodes(subj, crsenum) {
     const response = await axios.post(url, data);
     const htmlString = response.data;
 
-    // chatGPT helped with this HTML parsing
-    const $ = cheerio.load(htmlString);
-    const periodCodeElements = $(
-      'a[href^="https://www.dartmouth.edu/reg/docs/class_schedule_22f.pdf"]'
-    );
+    // used chatGPT to help parse the html
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlString, 'text/html');
+
+    const periodCodeElements = doc.querySelectorAll('a[href^="https://www.dartmouth.edu/reg/docs/class_schedule_22f.pdf"]');
 
     const periodCodes = [];
 
-    periodCodeElements.each((index, element) => {
-      const periodCode = $(element).text();
-      if (Object.keys(courseSchedule).includes(periodCode)) {
+    periodCodeElements.forEach(element => {
+      const periodCode = element.textContent.trim();
+      if (Object.keys(courseSchedule).includes(periodCode) && !periodCodes.includes(periodCode)) {
         periodCodes.push(periodCode);
       }
     });
