@@ -1,10 +1,10 @@
 import CourseInput from './components/CourseInput';
-import { DateArray, EventAttributes, createEvents } from 'ics';
+import { DateArray, createEvents } from 'ics';
 import './App.css';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import CourseCards from './components/CourseCards';
 import { IClass } from './types.ts';
-import { message } from 'antd';
+import { message, Button } from 'antd';
 
 function App() {
   const [classes, setClasses] = useState<IClass[]>([
@@ -52,7 +52,7 @@ function App() {
 
 
   async function handleDownload() {
-    const filename = 'ExampleEvent.ics';
+    const filename = 'course_calendar.ics';
 
     const generateEvents = () => {
       const events = [];
@@ -129,9 +129,7 @@ function App() {
   return (
     <div>
       {contextHolder}
-      <button type="button" onClick={() => handleDownload()}>
-        download
-      </button>
+      <Button type="primary" onClick={() => handleDownload()}>Download calendar</Button>
       <CourseInput addCourseToState={addClass} />
       <CourseCards courses={classes} deleteCourse={deleteClass} />
     </div >
