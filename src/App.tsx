@@ -13,7 +13,7 @@ function App() {
 
   const [messageApi, contextHolder] = message.useMessage();
 
-  const success = () => {
+  const addSuccess = () => {
     messageApi.open({
       type: 'success',
       content: 'Added course to calendar!',
@@ -27,19 +27,24 @@ function App() {
     });
   };
 
+  const removeSuccess = () => {
+    messageApi.info('Removed course from calendar!');
+  };
+
   function addClass(newClass: IClass) {
     if (classes.some((cls) => cls.classTitle === newClass.classTitle)) {
       error();
       return;
     }
-    success();
     setClasses((prevClasses) => [...prevClasses, newClass]);
+    addSuccess();
   }
 
   function deleteClass(oldClass: IClass) {
     setClasses((prevClasses) =>
       prevClasses.filter((cls) => cls !== oldClass)
     );
+    removeSuccess();
   }
 
   const [year, setYear] = useState('')

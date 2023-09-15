@@ -1,6 +1,7 @@
 import React from "react";
 import { IClass } from "../types";
 import { Card } from 'antd';
+import './components.scss';
 
 interface CourseCardProps {
   courses: IClass[];
@@ -15,14 +16,14 @@ function CourseCards({ courses, deleteCourse }: CourseCardProps): JSX.Element {
         courses.map((course) => (
         <Card
           key={course.periodCode}
-          bodyStyle={{ padding: '1rem' }}
+          bodyStyle={{ paddingTop: '1rem', paddingBottom: '1rem'}}
           title={course.classTitle}
           extra={<a onClick={ () => deleteCourse(course)}>Remove</a>}
           style={{ width: 300 }}
         >
-          <p>{course.periodCode}</p>
-          <p>Card content</p>
-          <p>Card content</p>
+          <p><span className="bold">Period: </span>{course.periodCode}</p>
+          <p><span className="bold">Location: </span>{course.location}</p>
+          <p><span className="bold">Instructor: </span>{course.instructor}</p>
         </Card>
         ))}
     </div>
