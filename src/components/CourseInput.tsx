@@ -14,7 +14,6 @@ interface CIProps {
 }
 
 function CourseInput({ addCourseToState }: CIProps): JSX.Element {
-  const [error, setError] = useState<boolean>(false);
   const [courseResults, setCourseResults] = useState<any[]>([]);
 
   function addCourseMiddle(course: IClass) {
@@ -30,14 +29,12 @@ function CourseInput({ addCourseToState }: CIProps): JSX.Element {
       setCourseResults(courses);
     } catch (err) {
       console.error('Error:', err);
-      setError(true);
     }
   };
 
   return (
     <div className="text-input">
       <Search placeholder="Enter course code (e.g., COSC 31)" onSearch={onSearch} style={{ width: 200 }} />
-      {error && <p>Error occurred while fetching data.</p>}
       <CourseResult courses={courseResults} addCourse={addCourseMiddle} />
 
     </div>
