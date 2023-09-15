@@ -1,5 +1,6 @@
 import React, { useState, ChangeEvent } from 'react';
-import fetchPeriodCodes from '../utils/fetchPeriodCodes';
+import fetchCourseInfo from '../utils/fetchCourseInfo';
+// import { Class } from '../types';
 
 // gnibus look over this because I'm not sure about all the typescript stuff
 
@@ -7,7 +8,7 @@ function CourseInput(): JSX.Element {
   const [courseName, setCourseName] = useState<string>('');
   const [courseNumber, setCourseNumber] = useState<string>('');
   const [error, setError] = useState<boolean>(false);
-  const [periodCodes, setPeriodCodes] = useState<string[]>([]);
+  const [periodCodes, setPeriodCodes] = useState<any[]>([]);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement>,
@@ -23,8 +24,8 @@ function CourseInput(): JSX.Element {
   const handleSubmit = async () => {
     try {
       console.log(courseName, courseNumber);
-      const codes = await fetchPeriodCodes(courseName, courseNumber);
-      setPeriodCodes(codes);
+      const courses = await fetchCourseInfo(courseName, courseNumber);
+      setPeriodCodes(courses);
     } catch (err) {
       console.error('Error:', err);
       setError(true);
@@ -49,12 +50,17 @@ function CourseInput(): JSX.Element {
       {error && <p>Error occurred while fetching data.</p>}
       {periodCodes.length > 0 ? (
         <ul>
-          {periodCodes.map((code) => (
-            <p key={code}>{code}</p>
+          {periodCodes.map((course) => (
+            <div key={course.periodCode}>
+              <p>{course.classTitle}</p>
+              <p>{course.periodCode}</p>
+              <p>{course.building}</p>
+              <p>{course.roomNumber}</p>
+            </div>
           ))}
         </ul>
       ) : (
-        <p>No period codes found.</p>
+        <p>No courses found.</p>
       )}
     </div>
   );
