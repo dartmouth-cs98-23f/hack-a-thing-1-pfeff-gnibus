@@ -25,7 +25,9 @@ export default async function fetchCourseInfo(subj: string, crsenum: string): Pr
 
     const rows = dataTableDiv.querySelectorAll('table tr');
 
-    const results = []
+    const results:Class[] = []
+
+    const seenPeriodCodes = new Set();
 
     for (const row of rows) {
       const cells = row.querySelectorAll('td');
@@ -37,17 +39,26 @@ export default async function fetchCourseInfo(subj: string, crsenum: string): Pr
         buildingDiv = cells[11];
         instructorDiv = cells[12];
 
+        const periodCode = periodCodeDiv?.textContent?.trim() || '';
+        if (seenPeriodCodes.has(periodCode)) {
+          continue;
+        }
+
+        const building = buildingDiv?.textContent?.trim() || '';
+        const room = roomDiv?.textContent?.trim() || '';
+        const location = `${building} ${room}`;
+
         const course = {
           subjectCode: subj,
           courseNum: crsenum,
           classTitle: titleDiv?.textContent?.trim() || '',
           instructor: instructorDiv?.textContent?.trim() || '',
           periodCode: periodCodeDiv?.textContent?.trim() || '',
-          building: buildingDiv?.textContent?.trim() || '',
-          roomNumber: roomDiv?.textContent?.trim() || '',
+          location: location,
         };
       
-      results.push(course)
+        results.push(course);
+        seenPeriodCodes.add(periodCode);
       }
     }
 

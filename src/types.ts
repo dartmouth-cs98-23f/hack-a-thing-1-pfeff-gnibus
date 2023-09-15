@@ -4,6 +4,5 @@ export interface Class {
   classTitle: string;
   instructor: string;
   periodCode: string;
-  building: string;
-  roomNumber: string;
+  location: string;
 }
