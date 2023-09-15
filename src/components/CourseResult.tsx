@@ -1,14 +1,14 @@
-import { Class } from "../types";
+import { IClass } from "../types";
 import { Table, Space } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 
 interface Props {
-  courses: Class[];
+  courses: IClass[];
 }
 
 function CourseResult({ courses }: Props): JSX.Element {
 
-  const columns: ColumnsType<Class> = [
+  const columns: ColumnsType<IClass> = [
     {
       title: 'Course Title',
       dataIndex: 'classTitle',

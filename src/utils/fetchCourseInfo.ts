@@ -1,7 +1,8 @@
 import axios from 'axios';
-import { Class } from '../types';
+import { IClass, Period } from '../types';
+import courseSchedule from '../constants/courseSchedule';
 
-export default async function fetchCourseInfo(subj: string, crsenum: string): Promise<Class[]> {
+export default async function fetchCourseInfo(subj: string, crsenum: string): Promise<IClass[]> {
   const url = 'http://localhost:3000/fetchPeriodCodesProxy';
   const data = new URLSearchParams();
   data.append('subj', subj);
@@ -25,7 +26,7 @@ export default async function fetchCourseInfo(subj: string, crsenum: string): Pr
 
     const rows = dataTableDiv.querySelectorAll('table tr');
 
-    const results:Class[] = []
+    const results:IClass[] = []
 
     const seenPeriodCodes = new Set();
 
@@ -48,6 +49,9 @@ export default async function fetchCourseInfo(subj: string, crsenum: string): Pr
         const room = roomDiv?.textContent?.trim() || '';
         const location = `${building} ${room}`;
 
+        const main: Period = courseSchedule[periodCode].class;
+        const xHour: Period = courseSchedule[periodCode].xHour;
+
         const course = {
           subjectCode: subj,
           courseNum: crsenum,
@@ -55,6 +59,8 @@ export default async function fetchCourseInfo(subj: string, crsenum: string): Pr
           instructor: instructorDiv?.textContent?.trim() || '',
           periodCode: periodCodeDiv?.textContent?.trim() || '',
           location: location,
+          main: main,
+          xHour: xHour,
         };
       
         results.push(course);
@@ -62,6 +68,7 @@ export default async function fetchCourseInfo(subj: string, crsenum: string): Pr
       }
     }
 
+    console.log(results);
     return results;
 
   } catch (error) {
