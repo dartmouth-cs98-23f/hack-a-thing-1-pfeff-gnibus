@@ -47,7 +47,6 @@ export default async function fetchCourseInfo(subj: string, crsenum: string): Pr
           roomNumber: roomDiv?.textContent?.trim() || '',
         };
       
-      console.log(course);
       results.push(course)
       }
     }
