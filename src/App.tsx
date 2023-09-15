@@ -16,8 +16,7 @@ function App() {
       classTitle: 'Test Class 1 (2A)',
       instructor: 'Ligmaballs',
       periodCode: '2A',
-      building: 'ECSC',
-      roomNumber: '069',
+      location: 'ECSC 069',
       main: {
         time: [14, 25, 1, 50],
         days: ['TU', 'TH'],
@@ -33,8 +32,7 @@ function App() {
       classTitle: 'Test Class 2 (10)',
       instructor: 'Balls ack',
       periodCode: '10',
-      building: 'Dartmouth Hall',
-      roomNumber: '180',
+      location: 'Dartmouth Hall 100',
       main: {
         time: [10, 10, 1, 5],
         days: ['MO', 'WE', 'FR'],
@@ -79,7 +77,7 @@ function App() {
         console.log('STARTER HERE', starter);
         events.push({
           title: `${classObj.subjectCode.trim()} ${classObj.courseNum.trim()}: ${classObj.classTitle}`,
-          description: `${classObj.instructor} ${classObj.building} ${classObj.roomNumber}`,
+          description: `${classObj.instructor} ${classObj.location}`,
           start: [date.getFullYear(), date.getMonth() + 1, date.getDate(), classObj.main?.time[0], classObj.main?.time[1]] as DateArray,
           duration: { hours: classObj.main?.time[2], minutes: classObj.main?.time[3] },
           recurrenceRule: `FREQ=WEEKLY;BYDAY=${classObj.main?.days.join(',')};INTERVAL=1;COUNT=10`
@@ -96,7 +94,7 @@ function App() {
           } */
           events.push({
             title: `${classObj.subjectCode.trim()} ${classObj.courseNum.trim()}: ${classObj.classTitle} X-Hour`,
-            description: `${classObj.instructor} ${classObj.building} ${classObj.roomNumber} X-Hour`,
+            description: `${classObj.instructor} ${classObj.location} X-Hour`,
             start: [date.getFullYear(), date.getMonth() + 1, date.getDate(), classObj.xHour.time[0], classObj.xHour.time[1]] as DateArray,
             duration: { hours: classObj.xHour.time[2], minutes: classObj.xHour.time[3] },
             recurrenceRule: `FREQ=WEEKLY;BYDAY=${classObj.xHour.days.join(',')};INTERVAL=1;COUNT=10`

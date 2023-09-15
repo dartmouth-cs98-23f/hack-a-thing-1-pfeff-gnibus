@@ -4,8 +4,7 @@ export interface IClass {
   classTitle: string;
   instructor: string;
   periodCode: string;
-  building: string;
-  roomNumber: string;
+  location: string;
   main?: Period;
   xHour?: Period;
 }
