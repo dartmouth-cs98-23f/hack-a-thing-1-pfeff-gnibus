@@ -7,6 +7,8 @@ import { IClass } from './types.ts';
 
 function App() {
 
+
+
   const [classes, setClasses] = useState<IClass[]>([
     {
       subjectCode: 'COSC',
@@ -43,6 +45,16 @@ function App() {
       }
     },
   ])
+
+  function addClass(newClass: IClass) {
+    setClasses((prevClasses) => [...prevClasses, newClass]);
+  }
+
+  function deleteClass(classId: string) {
+    setClasses((prevClasses) =>
+      prevClasses.filter((cls) => cls.subjectCode !== classId)
+    );
+  }
 
   const [year, setYear] = useState('')
 
