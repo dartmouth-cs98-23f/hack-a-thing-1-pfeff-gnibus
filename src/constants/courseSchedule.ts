@@ -141,7 +141,7 @@ const courseSchedule = {
         time: [19, 30, 0, 50],
         days: ['TU'],
       },
-    },
+    },   
   }
 
 export default courseSchedule;

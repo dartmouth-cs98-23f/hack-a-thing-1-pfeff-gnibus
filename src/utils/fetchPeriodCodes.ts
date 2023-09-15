@@ -1,7 +1,8 @@
 import axios from 'axios';
 import courseSchedule from '../constants/courseSchedule';
 
-export default async function fetchPeriodCodes(subj, crsenum) {
+export default async function fetchPeriodCodes(subj: string, crsenum: string): Promise<string[]> {
+
   const url = 'http://localhost:3000/fetchPeriodCodesProxy'; // Updated URL to use your server-side proxy route
   const data = new URLSearchParams();
   data.append('subj', subj);
@@ -18,10 +19,10 @@ export default async function fetchPeriodCodes(subj, crsenum) {
 
     const periodCodeElements = doc.querySelectorAll('a[href^="https://www.dartmouth.edu/reg/docs/class_schedule_22f.pdf"]');
 
-    const periodCodes = [];
+    const periodCodes: string[] = [];
 
     periodCodeElements.forEach(element => {
-      const periodCode = element.textContent.trim();
+      const periodCode = element.textContent?.trim() || '';
       if (Object.keys(courseSchedule).includes(periodCode) && !periodCodes.includes(periodCode)) {
         periodCodes.push(periodCode);
       }
@@ -29,6 +30,6 @@ export default async function fetchPeriodCodes(subj, crsenum) {
 
     return periodCodes;
   } catch (error) {
-    throw new Error('Error:', error);
+    throw new Error(`Error: ${error}`);
   }
 }
