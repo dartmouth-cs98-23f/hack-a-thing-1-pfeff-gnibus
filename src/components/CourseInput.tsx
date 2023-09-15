@@ -1,5 +1,6 @@
 import React, { useState, ChangeEvent } from 'react';
 import fetchCourseInfo from '../utils/fetchCourseInfo';
+import CourseResult from './CourseResult';
 // import { Class } from '../types';
 
 // gnibus look over this because I'm not sure about all the typescript stuff
@@ -8,7 +9,7 @@ function CourseInput(): JSX.Element {
   const [courseName, setCourseName] = useState<string>('');
   const [courseNumber, setCourseNumber] = useState<string>('');
   const [error, setError] = useState<boolean>(false);
-  const [periodCodes, setPeriodCodes] = useState<any[]>([]);
+  const [courseResults, setCourseResults] = useState<any[]>([]);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement>,
@@ -25,7 +26,7 @@ function CourseInput(): JSX.Element {
     try {
       console.log(courseName, courseNumber);
       const courses = await fetchCourseInfo(courseName, courseNumber);
-      setPeriodCodes(courses);
+      setCourseResults(courses);
     } catch (err) {
       console.error('Error:', err);
       setError(true);
@@ -48,17 +49,8 @@ function CourseInput(): JSX.Element {
         Submit
       </button>
       {error && <p>Error occurred while fetching data.</p>}
-      {periodCodes.length > 0 ? (
-        <ul>
-          {periodCodes.map((course) => (
-            <div key={course.periodCode}>
-              <p>{course.classTitle}</p>
-              <p>{course.periodCode}</p>
-              <p>{course.building}</p>
-              <p>{course.roomNumber}</p>
-            </div>
-          ))}
-        </ul>
+      {courseResults.length > 0 ? (
+        <CourseResult courses={courseResults} />
       ) : (
         <p>No courses found.</p>
       )}
