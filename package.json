@@ -43,6 +43,7 @@
     "eslint-plugin-react-refresh": "^0.4.1",
     "jsdom": "^22.1.0",
     "prettier": "^3.0.0",
+    "sass": "^1.67.0",
     "typescript": "^5.0.2",
     "vite": "^4.4.4",
     "vitest": "^0.33.0"

@@ -1,57 +1,50 @@
 import CourseInput from './components/CourseInput';
-import { DateArray, EventAttributes, createEvents } from 'ics';
+import { DateArray, createEvents } from 'ics';
 import './App.css';
-import { useState, useEffect } from 'react';
-
+import { useState } from 'react';
+import CourseCards from './components/CourseCards';
 import { IClass } from './types.ts';
+import { message, Button } from 'antd';
 
 function App() {
-
-
-
   const [classes, setClasses] = useState<IClass[]>([
-    {
-      subjectCode: 'COSC',
-      courseNum: '30',
-      classTitle: 'Test Class 1 (2A)',
-      instructor: 'Ligmaballs',
-      periodCode: '2A',
-      location: 'ECSC 069',
-      main: {
-        time: [14, 25, 1, 50],
-        days: ['TU', 'TH'],
-      },
-      xHour: {
-        time: [17, 30, 0, 50],
-        days: ['WE'],
-      }
-    },
-    {
-      subjectCode: 'PHIL',
-      courseNum: '1.01',
-      classTitle: 'Test Class 2 (10)',
-      instructor: 'Balls ack',
-      periodCode: '10',
-      location: 'Dartmouth Hall 100',
-      main: {
-        time: [10, 10, 1, 5],
-        days: ['MO', 'WE', 'FR'],
-      },
-      xHour: {
-        time: [12, 15, 0, 50],
-        days: ['TH'],
-      }
-    },
   ])
 
+
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const addSuccess = () => {
+    messageApi.open({
+      type: 'success',
+      content: 'Added course to calendar!',
+    });
+  };
+
+  const error = () => {
+    messageApi.open({
+      type: 'error',
+      content: 'You\'ve already added this course!',
+    });
+  };
+
+  const removeSuccess = () => {
+    messageApi.info('Removed course from calendar!');
+  };
+
   function addClass(newClass: IClass) {
+    if (classes.some((cls) => cls.classTitle === newClass.classTitle)) {
+      error();
+      return;
+    }
     setClasses((prevClasses) => [...prevClasses, newClass]);
+    addSuccess();
   }
 
-  function deleteClass(classId: string) {
+  function deleteClass(oldClass: IClass) {
     setClasses((prevClasses) =>
-      prevClasses.filter((cls) => cls.subjectCode !== classId)
+      prevClasses.filter((cls) => cls !== oldClass)
     );
+    removeSuccess();
   }
 
   const [year, setYear] = useState('')
@@ -59,12 +52,11 @@ function App() {
 
 
   async function handleDownload() {
-    const filename = 'ExampleEvent.ics';
+    const filename = 'course_calendar.ics';
 
     const generateEvents = () => {
       const events = [];
       for (const classObj of classes) {
-        console.log(classObj.subjectCode)
         const date = new Date();
         /* const event = {
           title: `${classObj.subjectCode.trim()} ${classObj.courseNum.trim()}: ${classObj.classTitle}`,
@@ -74,7 +66,6 @@ function App() {
           recurrenceRule: `FREQ=WEEKLY;BYDAY=${classObj.main.days.join(',')};INTERVAL=1;COUNT=10`
         } */
         const starter = [date.getFullYear(), date.getMonth() + 1, date.getDate(), classObj.main?.time[0], classObj.main?.time[1]] as DateArray;
-        console.log('STARTER HERE', starter);
         events.push({
           title: `${classObj.subjectCode.trim()} ${classObj.courseNum.trim()}: ${classObj.classTitle}`,
           description: `${classObj.instructor} ${classObj.location}`,
@@ -105,7 +96,6 @@ function App() {
     };
 
     const events = generateEvents();
-    console.log('events here', events);
 
     const file: Blob | MediaSource = await new Promise((resolve, reject) => {
       createEvents(
@@ -138,10 +128,10 @@ function App() {
 
   return (
     <div>
-      <button type="button" onClick={() => handleDownload()}>
-        download
-      </button>
+      {contextHolder}
+      <Button type="primary" onClick={() => handleDownload()}>Download calendar</Button>
       <CourseInput addCourseToState={addClass} />
+      <CourseCards courses={classes} deleteCourse={deleteClass} />
     </div >
   );
 }
