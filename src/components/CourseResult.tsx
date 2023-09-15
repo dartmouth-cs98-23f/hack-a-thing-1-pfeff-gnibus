@@ -4,9 +4,10 @@ import type { ColumnsType } from 'antd/es/table';
 
 interface Props {
   courses: IClass[];
+  addCourse: (course: IClass) => void;
 }
 
-function CourseResult({ courses }: Props): JSX.Element {
+function CourseResult({ courses, addCourse }: Props): JSX.Element {
 
   const columns: ColumnsType<IClass> = [
     {
@@ -27,9 +28,9 @@ function CourseResult({ courses }: Props): JSX.Element {
     {
       title: 'Action',
       key: 'action',
-      render: () => (
+      render: (_, record) => (
         <Space size="middle">
-          <a>Add to Calendar</a>
+          <a onClick={() => addCourse(record)}>Add to Calendar</a>
         </Space>
       ),
     },

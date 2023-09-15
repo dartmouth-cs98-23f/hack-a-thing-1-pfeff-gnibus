@@ -141,7 +141,7 @@ function App() {
       <button type="button" onClick={() => handleDownload()}>
         download
       </button>
-      <CourseInput />
+      <CourseInput addCourseToState={addClass} />
     </div >
   );
 }

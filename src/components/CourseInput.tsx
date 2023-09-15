@@ -2,13 +2,18 @@ import React, { useState, ChangeEvent } from 'react';
 import fetchCourseInfo from '../utils/fetchCourseInfo';
 import CourseResult from './CourseResult';
 import { Input } from 'antd';
+import { IClass } from '../types';
 
 const { Search } = Input;
 // import { Class } from '../types';
 
 // gnibus look over this because I'm not sure about all the typescript stuff
 
-function CourseInput(): JSX.Element {
+interface CIProps {
+  addCourseToState: (course: IClass) => void;
+}
+
+function CourseInput({ addCourseToState }: CIProps): JSX.Element {
   const [error, setError] = useState<boolean>(false);
   const [courseResults, setCourseResults] = useState<any[]>([]);
 
@@ -22,6 +27,10 @@ function CourseInput(): JSX.Element {
   //     setError(true);
   //   }
   // };
+
+  function addCourseMiddle(course: IClass) {
+    addCourseToState(course);
+  }
 
   const onSearch = async (value: string) => {
     try {
@@ -53,7 +62,7 @@ function CourseInput(): JSX.Element {
         Submit
       </button> */}
       {error && <p>Error occurred while fetching data.</p>}
-      <CourseResult courses={courseResults} />
+      <CourseResult courses={courseResults} addCourse={addCourseMiddle} />
 
     </div>
   );
