@@ -1,5 +1,5 @@
 import { Class } from "../types";
-import { Table } from 'antd';
+import { Table, Space } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 
 interface Props {
@@ -27,17 +27,16 @@ function CourseResult({ courses }: Props): JSX.Element {
     {
       title: 'Action',
       key: 'action',
-      // render: (_, record) => (
-      //   <Space size="middle">
-      //     <a>Invite {record.name}</a>
-      //     <a>Delete</a>
-      //   </Space>
-      // ),
+      render: () => (
+        <Space size="middle">
+          <a>Add to Calendar</a>
+        </Space>
+      ),
     },
   ];
 
   return (
-    <Table pagination={false} columns={columns} dataSource={courses} />
+    <Table tableLayout='fixed' pagination={false} columns={columns} dataSource={courses} />
   );
 }
 
