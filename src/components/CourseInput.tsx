@@ -1,30 +1,35 @@
 import React, { useState, ChangeEvent } from 'react';
-import fetchPeriodCodes from '../utils/fetchPeriodCodes';
+import fetchCourseInfo from '../utils/fetchCourseInfo';
+import CourseResult from './CourseResult';
+import { Input } from 'antd';
+
+const { Search } = Input;
+// import { Class } from '../types';
 
 // gnibus look over this because I'm not sure about all the typescript stuff
 
 function CourseInput(): JSX.Element {
-  const [courseName, setCourseName] = useState<string>('');
-  const [courseNumber, setCourseNumber] = useState<string>('');
   const [error, setError] = useState<boolean>(false);
-  const [periodCodes, setPeriodCodes] = useState<string[]>([]);
+  const [courseResults, setCourseResults] = useState<any[]>([]);
 
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement>,
-    setFunction: React.Dispatch<React.SetStateAction<string>>,
-    setErrorFunction: React.Dispatch<React.SetStateAction<boolean>>
-  ) => {
-    if (setErrorFunction) {
-      setErrorFunction(false);
-    }
-    setFunction(e.target.value);
-  };
+  // const onSearch = async () => {
+  //   try {
+  //     console.log(courseName, courseNumber);
+  //     const courses = await fetchCourseInfo(courseName, courseNumber);
+  //     setCourseResults(courses);
+  //   } catch (err) {
+  //     console.error('Error:', err);
+  //     setError(true);
+  //   }
+  // };
 
-  const handleSubmit = async () => {
+  const onSearch = async (value: string) => {
     try {
-      console.log(courseName, courseNumber);
-      const codes = await fetchPeriodCodes(courseName, courseNumber);
-      setPeriodCodes(codes);
+      const numberIndex = value.search(/[0-9]/);
+      const subj = value.slice(0, numberIndex).trim().toUpperCase();
+      const crsenum = value.slice(numberIndex).trim();
+      const courses = await fetchCourseInfo(subj, crsenum);
+      setCourseResults(courses);
     } catch (err) {
       console.error('Error:', err);
       setError(true);
@@ -33,7 +38,8 @@ function CourseInput(): JSX.Element {
 
   return (
     <div className="text-input">
-      <input
+      <Search placeholder="Enter course code (e.g., COSC 31)" onSearch={onSearch} style={{ width: 200 }} />
+      {/* <input
         type="text"
         value={courseName}
         onChange={(e) => handleChange(e, setCourseName, setError)}
@@ -45,17 +51,10 @@ function CourseInput(): JSX.Element {
       />
       <button type="button" onClick={handleSubmit}>
         Submit
-      </button>
+      </button> */}
       {error && <p>Error occurred while fetching data.</p>}
-      {periodCodes.length > 0 ? (
-        <ul>
-          {periodCodes.map((code) => (
-            <p key={code}>{code}</p>
-          ))}
-        </ul>
-      ) : (
-        <p>No period codes found.</p>
-      )}
+      <CourseResult courses={courseResults} />
+
     </div>
   );
 }
