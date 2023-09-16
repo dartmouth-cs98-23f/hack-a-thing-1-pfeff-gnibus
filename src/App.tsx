@@ -127,7 +127,7 @@ function App() {
     <>
       {contextHolder}
       <header className='header'>
-        <h1>Calenderize</h1>
+        <h1>Calendarize</h1>
         <p className='header-subtext'>Calendar generator for Dartmouth students</p>
       </header>
 
