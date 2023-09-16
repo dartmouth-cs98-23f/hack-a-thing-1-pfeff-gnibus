@@ -5,7 +5,6 @@ import { useState } from 'react';
 import CourseCards from './components/CourseCards';
 import { IClass } from './types.ts';
 import { message, Button, Divider} from 'antd';
-import { NavLink } from 'react-router-dom';
 
 function App() {
   const [classes, setClasses] = useState<IClass[]>([
