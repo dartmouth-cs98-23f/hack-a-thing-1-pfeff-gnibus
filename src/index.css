@@ -5,11 +5,45 @@
   color: black;
   background-color: rgb(255, 255, 255);
 
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  color: rgba(0, 0, 0, 0.776);
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+}
+
+.step-1 {
+  margin-bottom: 2.5rem;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  font-size: 1.8rem;
+  line-height: 1.2;
+  /* color: #1677ff; */
+}
+
+.header-subtext {
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.402);
+}
+
+p {
+  margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
 }
 
 a {
@@ -27,9 +61,4 @@ body {
   display: flex;
   min-width: 320px;
   min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
 }

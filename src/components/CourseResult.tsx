@@ -42,7 +42,7 @@ function CourseResult({ courses, addCourse }: Props): JSX.Element {
 
   // https://stackoverflow.com/questions/42186723/antd-ui-library-overriding-table-behavior-on-empty-data
   return (
-    <ConfigProvider renderEmpty={() => <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}  description="No courses found"/>}>
+    <ConfigProvider renderEmpty={() => <Empty style={{margin: '1rem'}} image={Empty.PRESENTED_IMAGE_SIMPLE}  description="No courses found"/>}>
       <Table tableLayout='fixed' pagination={false} columns={columns} dataSource={courses} rowKey="periodCode" />
     </ConfigProvider>
   );
