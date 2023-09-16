@@ -1,7 +1,5 @@
-import React from "react";
 import { IClass } from "../types";
 import { Card, Empty } from 'antd';
-import { SmileOutlined } from '@ant-design/icons';
 import './components.scss';
 
 interface CourseCardProps {

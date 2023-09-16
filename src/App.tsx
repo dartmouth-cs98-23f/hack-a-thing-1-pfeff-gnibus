@@ -50,7 +50,7 @@ function App() {
     removeSuccess();
   }
 
-  const [year, setYear] = useState('')
+  // const [year, setYear] = useState('')
 
 
 
@@ -69,7 +69,7 @@ function App() {
       const events = [];
       for (const classObj of classes) {
         const date = new Date();
-        const starter = [date.getFullYear(), date.getMonth() + 1, date.getDate(), classObj.main?.time[0], classObj.main?.time[1]] as DateArray;
+        // const starter = [date.getFullYear(), date.getMonth() + 1, date.getDate(), classObj.main?.time[0], classObj.main?.time[1]] as DateArray;
         events.push({
           title: `${classObj.subjectCode.trim()} ${classObj.courseNum.trim()}: ${classObj.classTitle}`,
           description: `${classObj.instructor} ${classObj.location}`,

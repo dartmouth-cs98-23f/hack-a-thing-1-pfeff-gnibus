@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import fetchCourseInfo from '../utils/fetchCourseInfo';
 import CourseResult from './CourseResult';
 import { Input } from 'antd';
