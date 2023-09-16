@@ -3,8 +3,8 @@ import { IClass, Period } from '../types';
 import courseSchedule from '../constants/courseSchedule';
 
 export default async function fetchCourseInfo(subj: string, crsenum: string): Promise<IClass[]> {
-  // https://github.com/Freeboard/thingproxy
-  const url = 'https://corsproxy.io/?https://oracle-www.dartmouth.edu/dart/groucho/timetable.course_quicksearch';
+  //https://corsproxy.io/
+  const url = 'https://corsproxy.io/?' + encodeURIComponent('https://oracle-www.dartmouth.edu/dart/groucho/timetable.course_quicksearch');
   const data = new URLSearchParams();
   data.append('subj', subj);
   data.append('crsenum', crsenum);
@@ -69,7 +69,6 @@ export default async function fetchCourseInfo(subj: string, crsenum: string): Pr
       }
     }
 
-    console.log(results);
     return results;
 
   } catch (error) {
