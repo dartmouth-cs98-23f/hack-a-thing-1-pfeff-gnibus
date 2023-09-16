@@ -19,7 +19,7 @@ export default async function fetchCourseInfo(subj: string, crsenum: string): Pr
     const dataTableDiv = doc.querySelector('.data-table');
 
     if (!dataTableDiv) {
-      throw new Error('No data table found');
+      throw new Error('No courses found.');
     }
 
     let titleDiv, periodCodeDiv, buildingDiv, roomDiv, instructorDiv;
@@ -72,6 +72,6 @@ export default async function fetchCourseInfo(subj: string, crsenum: string): Pr
     return results;
 
   } catch (error) {
-    throw new Error(`Error: ${error}`);
+    throw new Error(`${error}`);
   }
 }

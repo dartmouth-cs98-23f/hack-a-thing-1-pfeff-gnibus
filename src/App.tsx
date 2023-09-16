@@ -1,6 +1,6 @@
 import CourseInput from './components/CourseInput';
 import { DateArray, createEvents } from 'ics';
-import './App.css';
+import './index.css';
 import { useState } from 'react';
 import CourseCards from './components/CourseCards';
 import { IClass } from './types.ts';
@@ -129,9 +129,11 @@ function App() {
   return (
     <div>
       {contextHolder}
-      <Button type="primary" onClick={() => handleDownload()}>Download calendar</Button>
+      <h2>Calenderize</h2>
+      <p>Calendar generator for Dartmouth students</p>
       <CourseInput addCourseToState={addClass} />
       <CourseCards courses={classes} deleteCourse={deleteClass} />
+      <Button type="primary" onClick={() => handleDownload()}>Download calendar</Button>
     </div >
   );
 }

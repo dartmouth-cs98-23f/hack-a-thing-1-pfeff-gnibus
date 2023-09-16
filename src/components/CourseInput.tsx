@@ -28,7 +28,8 @@ function CourseInput({ addCourseToState }: CIProps): JSX.Element {
       const courses = await fetchCourseInfo(subj, crsenum);
       setCourseResults(courses);
     } catch (err) {
-      console.error('Error:', err);
+      setCourseResults([]);
+      console.error(err);
     }
   };
 
