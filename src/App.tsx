@@ -72,7 +72,8 @@ function App() {
         // const starter = [date.getFullYear(), date.getMonth() + 1, date.getDate(), classObj.main?.time[0], classObj.main?.time[1]] as DateArray;
         events.push({
           title: `${classObj.subjectCode.trim()} ${classObj.courseNum.trim()}: ${classObj.classTitle}`,
-          description: `${classObj.instructor} ${classObj.location}`,
+          // description: `${classObj.instructor} ${classObj.location}`,
+          location: classObj.location,
           start: [date.getFullYear(), date.getMonth() + 1, date.getDate(), classObj.main?.time[0], classObj.main?.time[1]] as DateArray,
           duration: { hours: classObj.main?.time[2], minutes: classObj.main?.time[3] },
           recurrenceRule: `FREQ=WEEKLY;BYDAY=${classObj.main?.days.join(',')};INTERVAL=1;COUNT=10`
@@ -82,7 +83,8 @@ function App() {
 
           events.push({
             title: `${classObj.subjectCode.trim()} ${classObj.courseNum.trim()}: ${classObj.classTitle} X-Hour`,
-            description: `${classObj.instructor} ${classObj.location} X-Hour`,
+            // description: `${classObj.instructor} ${classObj.location} X-Hour`,
+            location: classObj.location,
             start: [date.getFullYear(), date.getMonth() + 1, date.getDate(), classObj.xHour.time[0], classObj.xHour.time[1]] as DateArray,
             duration: { hours: classObj.xHour.time[2], minutes: classObj.xHour.time[3] },
             recurrenceRule: `FREQ=WEEKLY;BYDAY=${classObj.xHour.days.join(',')};INTERVAL=1;COUNT=10`
