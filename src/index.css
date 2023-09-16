@@ -48,17 +48,16 @@ h1, h2, h3, h4, h5, h6 {
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: #1677ff;
   text-decoration: inherit;
 }
 
 a:hover {
-  color: #434adc;
+  color: #4096ff;
 }
 
 body {
   margin: 0;
-  display: flex;
   min-width: 320px;
   min-height: 100vh;
 }

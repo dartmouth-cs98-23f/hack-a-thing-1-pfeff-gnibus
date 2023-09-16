@@ -5,6 +5,7 @@ import { useState } from 'react';
 import CourseCards from './components/CourseCards';
 import { IClass } from './types.ts';
 import { message, Button, Divider} from 'antd';
+import { NavLink } from 'react-router-dom';
 
 function App() {
   const [classes, setClasses] = useState<IClass[]>([
@@ -148,8 +149,12 @@ function App() {
       </section>
 
       <Divider />
-
+      
       <Button type="primary" onClick={() => handleDownload()}>Download calendar</Button>
+
+      <Button type="link" onClick={() => window.open("/instructions", "_blank")}>
+        How do I add this to my Google calendar?
+      </Button>
     </>
   );
 }
