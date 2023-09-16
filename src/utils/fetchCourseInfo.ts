@@ -3,7 +3,8 @@ import { IClass, Period } from '../types';
 import courseSchedule from '../constants/courseSchedule';
 
 export default async function fetchCourseInfo(subj: string, crsenum: string): Promise<IClass[]> {
-  const url = 'http://localhost:3000/fetchPeriodCodesProxy';
+  // https://github.com/Freeboard/thingproxy
+  const url = 'https://thingproxy.freeboard.io/fetch/https://oracle-www.dartmouth.edu/dart/groucho/timetable.course_quicksearch';
   const data = new URLSearchParams();
   data.append('subj', subj);
   data.append('crsenum', crsenum);
