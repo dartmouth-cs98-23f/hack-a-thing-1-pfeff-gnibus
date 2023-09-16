@@ -148,8 +148,12 @@ function App() {
       </section>
 
       <Divider />
-
+      
       <Button type="primary" onClick={() => handleDownload()}>Download calendar</Button>
+
+      <Button type="link" onClick={() => window.open("/instructions", "_blank")}>
+        How do I add this to my Google calendar?
+      </Button>
     </>
   );
 }
