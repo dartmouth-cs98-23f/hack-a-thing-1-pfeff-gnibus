@@ -5,7 +5,6 @@ import { Input } from 'antd';
 import { IClass } from '../types';
 
 const { Search } = Input;
-// import { Class } from '../types';
 
 // gnibus look over this because I'm not sure about all the typescript stuff
 
@@ -35,7 +34,7 @@ function CourseInput({ addCourseToState }: CIProps): JSX.Element {
 
   return (
     <div className="text-input">
-      <Search placeholder="Enter course code (e.g., COSC 31)" onSearch={onSearch} style={{ width: 200 }} />
+      <Search className="search-bar" placeholder="Enter course code (e.g., COSC 31)" onSearch={onSearch} style={{ width: 200 }} />
       <CourseResult courses={courseResults} addCourse={addCourseMiddle} />
 
     </div>

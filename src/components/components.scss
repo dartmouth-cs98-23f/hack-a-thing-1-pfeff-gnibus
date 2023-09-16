@@ -1,4 +1,18 @@
 .bold {
-  font-weight: bold;
+  font-weight: 600;
 }
 
+h3 {
+  margin-bottom: 1rem;
+}
+
+.search-bar {
+  width: 18rem !important;
+  margin-bottom: 1rem;
+}
+
+.course-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
