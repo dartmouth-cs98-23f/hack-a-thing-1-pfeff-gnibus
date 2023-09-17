@@ -5,6 +5,7 @@ import { useState } from 'react';
 import CourseCards from './components/CourseCards';
 import { IClass } from './types.ts';
 import { message, Button, Divider} from 'antd';
+import { NavLink } from 'react-router-dom';
 
 function App() {
   const [classes, setClasses] = useState<IClass[]>([
@@ -149,6 +150,8 @@ function App() {
       <Button type="link" onClick={() => window.open("/instructions", "_blank")}>
         How do I add a .ics file to my Google calendar?
       </Button>
+
+      <NavLink to="/instructions">Instructions</NavLink>
     </>
   );
 }
