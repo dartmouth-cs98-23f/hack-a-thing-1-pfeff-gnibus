@@ -128,11 +128,6 @@ function App() {
   return (
     <>
       {contextHolder}
-      <header className='header'>
-        <h1>Calendarize</h1>
-        <p className='header-subtext'>Calendar generator for Dartmouth students</p>
-      </header>
-
       <Divider />
 
       <section className='step-1'>
@@ -143,7 +138,7 @@ function App() {
       <Divider />
 
       <section className='step-2'>
-        <h3>Step 2: View courses and download calendar invite</h3>
+        <h3>Step 2: View courses and download .ics file</h3>
         <CourseCards courses={classes} deleteCourse={deleteClass} />
       </section>
 
@@ -152,7 +147,7 @@ function App() {
       <Button type="primary" onClick={() => handleDownload()}>Download calendar</Button>
 
       <Button type="link" onClick={() => window.open("/instructions", "_blank")}>
-        How do I add this to my Google calendar?
+        How do I add a .ics file to my Google calendar?
       </Button>
     </>
   );
