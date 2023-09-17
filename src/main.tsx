@@ -9,8 +9,8 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <header className='header'>
-        <h1>Calendarize</h1>
-        <p className='header-subtext'>Course calendar generator for Dartmouth students</p>
+          <h1>Calendarize</h1>
+          <p className='header-subtext'>Course calendar generator for Dartmouth students</p>
       </header>
       <Routes>
         <Route path="/" element={<App />} />

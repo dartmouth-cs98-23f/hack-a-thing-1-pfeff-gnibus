@@ -17,6 +17,11 @@
   -webkit-text-size-adjust: 100%;
 }
 
+.logo {
+  width: 3rem;
+  position: absolute;
+}
+
 .step-1 {
   margin-bottom: 2.5rem;
 }
