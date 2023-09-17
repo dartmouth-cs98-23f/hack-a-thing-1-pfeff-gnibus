@@ -147,11 +147,9 @@ function App() {
       
       <Button type="primary" onClick={() => handleDownload()}>Download calendar</Button>
 
-      <Button type="link" onClick={() => window.open("/instructions", "_blank")}>
-        How do I add a .ics file to my Google calendar?
-      </Button>
-
-      <NavLink to="/instructions">Instructions</NavLink>
+      <NavLink to="/instructions" target="_blank">
+        <Button type="link">How do I add a .ics file to my Google calendar?</Button>
+      </NavLink>
     </>
   );
 }
