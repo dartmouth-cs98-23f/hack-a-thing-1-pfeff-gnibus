@@ -22,7 +22,7 @@ Tutorial Page:
 
 ## Who Did What?
 
-Josh worked on the design of each component (course search, course cards, .ics import tutorial). He also implemented the course search webscraping logic.
+Josh worked on the design of each component (course search, course cards, .ics import tutorial). He also implemented the course search webscraping logic and added Google Analytics to the project.
 
 Jack worked on the .ics download and redux. He also implemented the date-finding webscraping logic (which is used when creating the .ics file).
 
@@ -44,6 +44,8 @@ Josh Pfefferkorn and Jack Gnibus
 ## Acknowledgments
 
 [React Redux with TypeScript](https://react-redux.js.org/introduction/getting-started)
+
+[Ant Design Component Library](https://ant.design/)
 
 [ICS NPM Documentation](https://www.npmjs.com/package/ics)
 
