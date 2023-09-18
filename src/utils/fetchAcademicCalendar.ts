@@ -2,29 +2,27 @@ import axios from 'axios';
 import { IClass, IPeriod, ICalendarYear } from '../types';
 import courseSchedule from '../constants/courseSchedule';
 
-export default async function fetchAcademicCalendar(year: number): Promise<ICalendarYear> {
+export default async function fetchAcademicCalendar(): Promise<ICalendarYear> {
 
   const date = new Date();
   let currYear = date.getFullYear() % 100;
-  console.log('curr year', currYear);
 
   let yearCode = ''
   if ((date.getMonth() === 7 && date.getDate() > 16) || date.getMonth() > 7) { // could maybe do something else for this but checks if after rough gradutation date
     yearCode = `${currYear}_${currYear + 1}`
-    console.log('SUBTRACTING');
   } else {
-    console.log('HELLO ADDING')
     yearCode = `${currYear - 1}_${currYear}`
   }
 
-  console.log('YEAR CODE', yearCode);
 
-  const url = 'http://localhost:3000/fetchAcademicCalendar';
+  //const url = 'http://localhost:3000/fetchAcademicCalendar';
+  const url = 'https://corsproxy.io/?' + encodeURIComponent(`https://www.dartmouth.edu/reg/calendar/academic/${yearCode}.html`);
+
   //const data = new URLSearchParams();
-  const data = { yearCode };
 
   try {
-    const response = await axios.post(url, data);
+    //const response = await axios.post(url, data);
+    const response = await axios.get(url);
     const htmlString = response.data;
 
     // used chatGPT to parse html
@@ -44,15 +42,11 @@ export default async function fetchAcademicCalendar(year: number): Promise<ICale
       spring: [new Date(), new Date()],
     }
 
-    console.log('termElements', termElements);
-
     termElements.forEach((element, index) => {
       const text = element.textContent;
       terms.forEach((term) => {
         if (text?.includes(`${term} term classes begin`)) {
-          console.log(text, term)
           const startDateMatch = text.split(' -- ');
-          console.log(startDateMatch);
           if (startDateMatch) {
             dates[term.toLocaleLowerCase() as keyof ICalendarYear][0] = new Date(startDateMatch[0]);
           } else {

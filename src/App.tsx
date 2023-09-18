@@ -1,22 +1,33 @@
 import CourseInput from './components/CourseInput';
 import { DateArray, createEvents } from 'ics';
-import './App.css';
+import './index.css';
 import { useState, useEffect } from 'react';
 import CourseCards from './components/CourseCards';
 import { ICalendarYear, IClass } from './types.ts';
-import { message, Button } from 'antd';
+import { message, Button, Divider, Checkbox } from 'antd';
+import { NavLink } from 'react-router-dom';
 import fetchAcademicCalendar from './utils/fetchAcademicCalendar.ts';
+import { useAppSelector, useAppDispatch } from './hooks'
+import { resetStatus } from './components/classesSlice.ts'
+import type { CheckboxChangeEvent } from 'antd/es/checkbox';
+import { format, addDays, startOfWeek, startOfDay, isSameDay } from 'date-fns';
+
+
+
 
 function App() {
-  const [classes, setClasses] = useState<IClass[]>([]);
   const [keyDates, setKeyDates] = useState<ICalendarYear | undefined>();
   const [term, setTerm] = useState<string | undefined>();
   const [messageApi, contextHolder] = message.useMessage();
+  const [includeXHour, setIncludeXHour] = useState(true);
+  const classes = useAppSelector((state) => state.classes.classesList)
+  const status = useAppSelector((state) => state.classes.status)
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     async function fetchDates() {
       try {
-        const dates = await fetchAcademicCalendar(2023);
+        const dates = await fetchAcademicCalendar();
         setKeyDates(dates);
       } catch (error) {
         console.log('fetch dates error', error);
@@ -38,53 +49,52 @@ function App() {
             winter: 'W',
             spring: 'S',
           }
-          const termCode = (date.getFullYear() % 100) + acronyms[term]
           setTerm(term)
         }
       });
     }
   }, [keyDates]);
 
-
-  const addSuccess = () => {
-    messageApi.open({
-      type: 'success',
-      content: 'Added course to calendar!',
-    });
-  };
-
-  const error = () => {
-    messageApi.open({
-      type: 'error',
-      content: 'You\'ve already added this course!',
-    });
-  };
-
-  const removeSuccess = () => {
-    messageApi.info('Removed course from calendar!');
-  };
-
-  function addClass(newClass: IClass) {
-    if (classes.some((cls) => cls.classTitle === newClass.classTitle)) {
-      error();
-      return;
+  useEffect(() => {
+    if (status === 'success') {
+      messageApi.open({
+        type: 'success',
+        content: 'Added course to calendar!',
+      });
+    } else if (status === 'error') {
+      messageApi.open({
+        type: 'error',
+        content: 'You\'ve already added this course!',
+      });
+    } else if (status === 'remove-success') {
+      messageApi.open({
+        type: 'success',
+        content: 'Removed course from calendar!',
+      });
+    } else if (status === 'overlap') {
+      messageApi.open({
+        type: 'error',
+        content: 'Course overlaps with current schedule!',
+      });
     }
-    setClasses((prevClasses) => [...prevClasses, newClass]);
-    addSuccess();
-  }
+    dispatch(resetStatus())
+  }, [status])
 
-  function deleteClass(oldClass: IClass) {
-    setClasses((prevClasses) =>
-      prevClasses.filter((cls) => cls !== oldClass)
-    );
-    removeSuccess();
-  }
+  const onChange = (e: CheckboxChangeEvent) => {
+    setIncludeXHour(e.target.checked);
+  };
 
-  const [year, setYear] = useState('')
-
-
+  // adapted from ics npm documentation
   async function handleDownload() {
     const filename = 'course_calendar.ics';
+
+    if (classes.length === 0) {
+      messageApi.open({
+        type: 'error',
+        content: 'You haven\'t added any courses!',
+      });
+      return;
+    }
 
     const generateEvents = () => {
       if (keyDates) {
@@ -101,21 +111,65 @@ function App() {
           const startMonth = keyDates[term as keyof ICalendarYear][0].getMonth() + 1;
           const startDay = keyDates[term as keyof ICalendarYear][0].getDate();
 
-          // possible issues - calcualte first occurance of day in the first week as one thing. figure out how to make sure it is on or after; also, the recurrence rule until is not inclusive for end dates
-          events.push({
-            title: `${classObj.subjectCode.trim()} ${classObj.courseNum.trim()}: ${classObj.classTitle}`,
-            description: `${classObj.instructor} ${classObj.location}`,
-            start: [startYear, startMonth, startDay, classObj.main?.time[0], classObj.main?.time[1]] as DateArray,
-            duration: { hours: classObj.main?.time[2], minutes: classObj.main?.time[3] },
-            recurrenceRule: `FREQ=WEEKLY;BYDAY=${classObj.main?.days.join(',')};INTERVAL=1;UNTIL=${endDate}`
-          });
+          // chatGPT helped with this function
+          const findNextOccurrance = (startDate: Date, day: 'MO' | 'TU' | 'WE' | 'TH' | 'FR' | 'SU') => {
+            const dateCodes = {
+              'SU': 0,
+              'MO': 1,
+              'TU': 2,
+              'WE': 3,
+              'TH': 4,
+              'FR': 5,
+            }
+            const targetDate = startOfWeek(startDate, { weekStartsOn: dateCodes[day] as 0 | 1 | 2 | 3 | 4 | 5 });
+
+            if (targetDate < startDate) {
+              const newDate = addDays(targetDate, 7);
+              return newDate;
+              //[format(newDate, 'yyyy'), format(newDate, 'MM'), format(newDate, 'dd')]
+            }
+            return targetDate;
+            //[format(targetDate, 'yyyy'), format(targetDate, 'MM'), format(targetDate, 'dd')]
+          };
+
+          // find start date
+          if (classObj.main) {
+            const startArray = []
+            let earliest = new Date('9/15/2099');
+            for (const day of classObj.main?.days) {
+              const temp = findNextOccurrance(keyDates[term as keyof ICalendarYear][0], day as 'MO' | 'TU' | 'WE' | 'TH' | 'FR')
+              if (temp < earliest) {
+                earliest = temp;
+              }
+            }
+
+            // possible issues - calcualte first occurance of day in the first week as one thing. figure out how to make sure it is on or after; also, the recurrence rule until is not inclusive for end dates
+            events.push({
+              title: `${classObj.subjectCode.trim()} ${classObj.courseNum.trim()}: ${classObj.classTitle}`,
+              description: `${classObj.instructor} ${classObj.location}`,
+              location: classObj.location,
+              start: [parseInt(format(earliest, 'yyyy')), parseInt(format(earliest, 'MM')), parseInt(format(earliest, 'dd')), classObj.main?.time[0], classObj.main?.time[1]] as DateArray,
+              duration: { hours: classObj.main?.time[2], minutes: classObj.main?.time[3] },
+              recurrenceRule: `FREQ=WEEKLY;BYDAY=${classObj.main?.days.join(',')};INTERVAL=1;UNTIL=${endDate}`
+            });
+
+          }
 
           // adding x hour if option selected
-          if (classObj.xHour) {
+          if (classObj.xHour && includeXHour) {
+
+            let earliest = new Date('9/15/2099');
+            for (const day of classObj.xHour.days) {
+              const temp = findNextOccurrance(keyDates[term as keyof ICalendarYear][0], day as 'MO' | 'TU' | 'WE' | 'TH' | 'FR')
+              if (temp < earliest) {
+                earliest = temp;
+              }
+            }
             events.push({
               title: `${classObj.subjectCode.trim()} ${classObj.courseNum.trim()}: ${classObj.classTitle} X-Hour`,
               description: `${classObj.instructor} ${classObj.location} X-Hour`,
-              start: [startYear, startMonth, startDay, classObj.xHour.time[0], classObj.xHour.time[1]] as DateArray,
+              location: classObj.location,
+              start: [parseInt(format(earliest, 'yyyy')), parseInt(format(earliest, 'MM')), parseInt(format(earliest, 'dd')), classObj.xHour.time[0], classObj.xHour.time[1]] as DateArray,
               duration: { hours: classObj.xHour.time[2], minutes: classObj.xHour.time[3] },
               recurrenceRule: `FREQ=WEEKLY;BYDAY=${classObj.xHour.days.join(',')};INTERVAL=1;UNTIL=${endDate}`
             });
@@ -126,7 +180,6 @@ function App() {
     };
 
     const events = generateEvents();
-
     if (events) {
       const file: Blob | MediaSource = await new Promise((resolve, reject) => {
         createEvents(
@@ -156,18 +209,57 @@ function App() {
     } else {
       // error handle failure to generate events
     }
-
   }
 
-
+  const getTerm = () => {
+    if (term) {
+      const date = new Date();
+      const acronyms = {
+        summer: 'X',
+        fall: 'F',
+        winter: 'W',
+        spring: 'S',
+      }
+      const termCode = (date.getFullYear() % 100) + acronyms[term as keyof ICalendarYear]
+      return termCode
+    }
+  }
 
   return (
-    <div>
+    <>
       {contextHolder}
-      <Button type="primary" onClick={() => handleDownload()}>Download calendar</Button>
-      <CourseInput addCourseToState={addClass} />
-      <CourseCards courses={classes} deleteCourse={deleteClass} />
-    </div >
+      <Divider />
+
+      <section className='step-1'>
+        <h3>Step 1: Enter courses for {getTerm()}</h3>
+        <CourseInput />
+      </section>
+
+      <Divider />
+
+      <section className='step-2'>
+        <h3>Step 2: View courses and download .ics file</h3>
+        <CourseCards />
+      </section>
+
+      <Divider />
+
+      <div id="download-container">
+        <Checkbox checked={includeXHour} onChange={onChange}>
+          Include X-hours
+        </Checkbox>
+        <div>
+          <Button type="primary" onClick={() => handleDownload()}>Download calendar</Button>
+
+          <NavLink to="/instructions" target="_blank">
+            <Button type="link">How do I add a .ics file to my Google calendar?</Button>
+          </NavLink>
+        </div>
+
+
+
+      </div>
+    </>
   );
 }
 

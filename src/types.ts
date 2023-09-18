@@ -1,4 +1,5 @@
 export interface IClass {
+  id: string;
   subjectCode: string;
   courseNum: string;
   classTitle: string;

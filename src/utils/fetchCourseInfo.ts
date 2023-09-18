@@ -1,9 +1,11 @@
 import axios from 'axios';
 import { IClass, IPeriod } from '../types';
+import { nanoid } from 'nanoid';
 import courseSchedule from '../constants/courseSchedule';
 
 export default async function fetchCourseInfo(subj: string, crsenum: string): Promise<IClass[]> {
-  const url = 'http://localhost:3000/fetchPeriodCodesProxy';
+  //https://corsproxy.io/
+  const url = 'https://corsproxy.io/?' + encodeURIComponent('https://oracle-www.dartmouth.edu/dart/groucho/timetable.course_quicksearch');
   const data = new URLSearchParams();
   data.append('subj', subj);
   data.append('crsenum', crsenum);
@@ -19,7 +21,7 @@ export default async function fetchCourseInfo(subj: string, crsenum: string): Pr
     const dataTableDiv = doc.querySelector('.data-table');
 
     if (!dataTableDiv) {
-      throw new Error('No data table found');
+      throw new Error('No courses found.');
     }
 
     let titleDiv, periodCodeDiv, buildingDiv, roomDiv, instructorDiv;
@@ -53,6 +55,7 @@ export default async function fetchCourseInfo(subj: string, crsenum: string): Pr
         const xHour: IPeriod = courseSchedule[periodCode].xHour;
 
         const course = {
+          id: nanoid(10),
           subjectCode: subj,
           courseNum: crsenum,
           classTitle: titleDiv?.textContent?.trim() || '',
@@ -68,10 +71,9 @@ export default async function fetchCourseInfo(subj: string, crsenum: string): Pr
       }
     }
 
-    console.log(results);
     return results;
 
   } catch (error) {
-    throw new Error(`Error: ${error}`);
+    throw new Error(`${error}`);
   }
 }

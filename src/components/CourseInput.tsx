@@ -1,24 +1,16 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import fetchCourseInfo from '../utils/fetchCourseInfo';
 import CourseResult from './CourseResult';
 import { Input } from 'antd';
 import { IClass } from '../types';
 
 const { Search } = Input;
-// import { Class } from '../types';
 
 // gnibus look over this because I'm not sure about all the typescript stuff
 
-interface CIProps {
-  addCourseToState: (course: IClass) => void;
-}
 
-function CourseInput({ addCourseToState }: CIProps): JSX.Element {
+function CourseInput(): JSX.Element {
   const [courseResults, setCourseResults] = useState<any[]>([]);
-
-  function addCourseMiddle(course: IClass) {
-    addCourseToState(course);
-  }
 
   const onSearch = async (value: string) => {
     try {
@@ -28,14 +20,15 @@ function CourseInput({ addCourseToState }: CIProps): JSX.Element {
       const courses = await fetchCourseInfo(subj, crsenum);
       setCourseResults(courses);
     } catch (err) {
-      console.error('Error:', err);
+      setCourseResults([]);
+      console.error(err);
     }
   };
 
   return (
     <div className="text-input">
-      <Search placeholder="Enter course code (e.g., COSC 31)" onSearch={onSearch} style={{ width: 200 }} />
-      <CourseResult courses={courseResults} addCourse={addCourseMiddle} />
+      <Search className="search-bar" placeholder="Enter course code (e.g., COSC 31)" onSearch={onSearch} style={{ width: 200 }} />
+      <CourseResult courses={courseResults} />
 
     </div>
   );

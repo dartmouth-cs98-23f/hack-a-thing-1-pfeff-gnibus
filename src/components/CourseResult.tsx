@@ -2,14 +2,17 @@ import { IClass } from "../types";
 import { Table, Space, ConfigProvider, Empty } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 
+import { useAppSelector, useAppDispatch } from "../hooks";
+
+import { addClass } from "./classesSlice";
+
 
 interface Props {
   courses: IClass[];
-  addCourse: (course: IClass) => void;
 }
 
-function CourseResult({ courses, addCourse }: Props): JSX.Element {
-
+function CourseResult({ courses }: Props): JSX.Element {
+  const dispatch = useAppDispatch()
 
   const columns: ColumnsType<IClass> = [
     {
@@ -32,9 +35,9 @@ function CourseResult({ courses, addCourse }: Props): JSX.Element {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <a 
-          onClick={() => addCourse(record)
-          }>Add to Calendar</a>
+          <a
+            onClick={() => dispatch(addClass(record))
+            }>Add to Calendar</a>
         </Space>
       ),
     },
@@ -42,7 +45,7 @@ function CourseResult({ courses, addCourse }: Props): JSX.Element {
 
   // https://stackoverflow.com/questions/42186723/antd-ui-library-overriding-table-behavior-on-empty-data
   return (
-    <ConfigProvider renderEmpty={() => <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}  description="No courses found"/>}>
+    <ConfigProvider renderEmpty={() => <Empty style={{ margin: '1rem' }} image={Empty.PRESENTED_IMAGE_SIMPLE} description="No courses found" />}>
       <Table tableLayout='fixed' pagination={false} columns={columns} dataSource={courses} rowKey="periodCode" />
     </ConfigProvider>
   );

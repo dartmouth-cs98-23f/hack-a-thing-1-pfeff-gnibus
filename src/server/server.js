@@ -28,10 +28,10 @@ app.post('/fetchPeriodCodesProxy', async (req, res) => {
       req.body,
       config
     );
-
+    x
     res.json(response.data);
   } catch (error) {
-    console.error('Error:', error);
+    console.error(error);
     res.status(500).json({ error: 'Error fetching data' });
   }
 });
