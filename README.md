@@ -1,4 +1,4 @@
-# Hack Technology / Project Attempted
+# Calendarize ([hosted version](https://calendarize.onrender.com/))
 
 ## What you built? 
 
@@ -30,6 +30,10 @@ Jack worked on the .ics download and redux. He also implemented the date-finding
 
 We tried out TypeScript for this application and really liked the benefits of static typing. Even though it came at the expense of some boilerplate code in setting up interfaces and declaring types for variables, the gains in terms of bug-catching, documentation, and improved clarity were well worth it. We also tried out webscraping for the first time, and learned how to scrape information off of webpages for use in our application. Additionally, we worked with a new filetype (.ics) used for storing calendar data.
 
+## Challenges
+
+A major challenge initially was scraping data from the course timetable. Since we could not find a programmatic API, we fetched the entire webpage of a given course search and parsed through it for the fields we needed. We also ran into a CORS error; while we initially set up a server-side proxy for local testing, we ended up using a free [CORS proxy](https://corsproxy.io/) to avoid having to host our own server. We also ran into a bit of difficulty with time zones, as we needed to ensure that the calendar invites reflected EST class times regardless of the user's location.
+
 ## Authors
 
 Josh Pfefferkorn and Jack Gnibus
@@ -45,7 +49,7 @@ Josh Pfefferkorn and Jack Gnibus
 
 [React Redux with TypeScript](https://react-redux.js.org/introduction/getting-started)
 
-[Ant Design Component Library](https://ant.design/)
+[Ant Design Component Library]([https://ant.design/](https://ant.design/components/overview/))
 
 [ICS NPM Documentation](https://www.npmjs.com/package/ics)
 
