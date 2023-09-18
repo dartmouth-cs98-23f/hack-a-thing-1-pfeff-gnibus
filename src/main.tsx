@@ -19,7 +19,7 @@ ReactDOM.render(
         <Route path="/instructions" element={<Instructions />} />
       </Routes>
       <footer className='footer'>
-        <p className='header-subtext'>Have feedback? Let us know how we can improve at <a href="mailto: calendarizedartmouth@gmail.com">calendarizedartmouth@gmail.com</a></p>
+        <p className='header-subtext'>Have feedback? Let us know how we can improve at <a href="mailto:calendarizedartmouth@gmail.com">calendarizedartmouth@gmail.com</a></p>
       </footer>
     </BrowserRouter>
   </Provider>,
