@@ -2,7 +2,7 @@
 
 ## What you built? 
 
-At the start of every term, (organized) Dartmouth students diligently put their courses into their calendar. However, this process is tedious and prone to mistakes. We built a tool that allows Dartmouth students to quickly generate a calendar with their courses to import into a calendar application of their choosing to expedite this process.
+At the start of every term, (organized) Dartmouth students diligently put their course meeting times into their calendar. However, this process is tedious and prone to mistakes. We built a tool that allows Dartmouth students to quickly generate a calendar with their courses to import into a calendar application of their choice to expedite this process.
 
 
 Landing Page:
