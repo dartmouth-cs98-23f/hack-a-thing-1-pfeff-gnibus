@@ -5,6 +5,7 @@ import Instructions from './Instructions';
 import './index.css';
 import { Provider } from 'react-redux'
 import { store } from './store'
+import { Divider } from 'antd';
 
 
 ReactDOM.render(
@@ -18,8 +19,9 @@ ReactDOM.render(
         <Route path="/" element={<App />} />
         <Route path="/instructions" element={<Instructions />} />
       </Routes>
+      <Divider />
       <footer className='footer'>
-        <p className='header-subtext'>Have feedback? Let us know how we can improve at <a href="mailto: calendarizedartmouth@gmail.com">calendarizedartmouth@gmail.com</a></p>
+        <p className='footer-subtext'>Have feedback? Let us know how we can improve at <a href="mailto: calendarizedartmouth@gmail.com">calendarizedartmouth@gmail.com</a></p>
       </footer>
     </BrowserRouter>
   </Provider>,
