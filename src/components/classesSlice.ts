@@ -21,9 +21,14 @@ export const classesSlice = createSlice({
         return { ...state, status: 'error' }
       }
 
+      if (state.classesList.length === 4) {
+        return { ...state, status: 'capacity' }
+      }
+
       if (state.classesList.some((course) => course.periodCode === action.payload.periodCode)) {
         return { ...state, status: 'overlap' }
       }
+
       const newClasses = [...state.classesList, action.payload]
       return {
         classesList: newClasses,
@@ -37,7 +42,7 @@ export const classesSlice = createSlice({
         status: 'remove-success'
       }
     },
-    resetStatus: (state, action: PayloadAction<void>) => {
+    resetStatus: (state) => {
       return {
         ...state,
         status: 'chillin'

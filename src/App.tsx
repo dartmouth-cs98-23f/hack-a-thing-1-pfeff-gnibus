@@ -3,17 +3,14 @@ import { DateArray, createEvents } from 'ics';
 import './index.css';
 import { useState, useEffect } from 'react';
 import CourseCards from './components/CourseCards';
-import { ICalendarYear, IClass } from './types.ts';
+import { ICalendarYear } from './types.ts';
 import { message, Button, Divider, Checkbox } from 'antd';
 import { NavLink } from 'react-router-dom';
 import fetchAcademicCalendar from './utils/fetchAcademicCalendar.ts';
 import { useAppSelector, useAppDispatch } from './hooks'
 import { resetStatus } from './components/classesSlice.ts'
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
-import { format, addDays, startOfWeek, startOfDay, isSameDay } from 'date-fns';
-
-
-
+import { format, addDays, startOfWeek } from 'date-fns';
 
 function App() {
   const [keyDates, setKeyDates] = useState<ICalendarYear | undefined>();
@@ -43,12 +40,6 @@ function App() {
         const term = termKey as keyof ICalendarYear
         const [startDate, endDate] = keyDates[term];
         if (date >= startDate && date <= endDate) {
-          const acronyms = {
-            summer: 'X',
-            fall: 'F',
-            winter: 'W',
-            spring: 'S',
-          }
           setTerm(term)
         }
       });
@@ -76,6 +67,11 @@ function App() {
         type: 'error',
         content: 'Course overlaps with current schedule!',
       });
+    } else if (status === 'capacity') {
+      messageApi.open({
+        type: 'error',
+        content: 'Course limit reached!',
+      });
     }
     dispatch(resetStatus())
   }, [status])
@@ -100,16 +96,10 @@ function App() {
       if (keyDates) {
         const events = [];
         for (const classObj of classes) {
-          const date = new Date();
-
           const endYear = keyDates[term as keyof ICalendarYear][1].getFullYear();
           const endMonth = String(keyDates[term as keyof ICalendarYear][1].getMonth() + 1).padStart(2, '0');
           const endDay = String(keyDates[term as keyof ICalendarYear][1].getDate()).padStart(2, '0');
           const endDate = `${endYear}${endMonth}${endDay}`;
-
-          const startYear = keyDates[term as keyof ICalendarYear][0].getFullYear();
-          const startMonth = keyDates[term as keyof ICalendarYear][0].getMonth() + 1;
-          const startDay = keyDates[term as keyof ICalendarYear][0].getDate();
 
           // chatGPT helped with this function
           const findNextOccurrance = (startDate: Date, day: 'MO' | 'TU' | 'WE' | 'TH' | 'FR' | 'SU') => {
@@ -134,7 +124,6 @@ function App() {
 
           // find start date
           if (classObj.main) {
-            const startArray = []
             let earliest = new Date('9/15/2099');
             for (const day of classObj.main?.days) {
               const temp = findNextOccurrance(keyDates[term as keyof ICalendarYear][0], day as 'MO' | 'TU' | 'WE' | 'TH' | 'FR')
