@@ -2,10 +2,23 @@
 
 ## What you built? 
 
-At the start of every term, (organized) Dartmouth students diligently put their courses into their calendar application of choice. However, this process is tedious and prone to mistakes. We built a tool that allows Dartmouth students to quickly generate a calendar with their courses to import into a calendar application of their choosing to expedite this process.
+At the start of every term, (organized) Dartmouth students diligently put their courses into their calendar. However, this process is tedious and prone to mistakes. We built a tool that allows Dartmouth students to quickly generate a calendar with their courses to import into a calendar application of their choosing to expedite this process.
 
-Include some screenshots.
-[How?](https://help.github.com/articles/about-readmes/#relative-links-and-image-paths-in-readme-files)
+
+Landing Page:
+![Landing Page](src/assets/prodnoclasses.png)
+
+Classes Added:
+![Classes Added](src/assets/prodwithclasses.png)
+
+Full Calendar Example, no X-Hours:
+![Full Calendar, no X-Hours](src/assets/calnox.png)
+
+Full Calendar Example, with X-Hours:
+![Full Calendar, with X-Hours](src/assets/calwithx.png)
+
+Tutorial Page:
+![Tutorial](src/assets/tutorial.png)
 
 ## Who Did What?
 
@@ -19,19 +32,19 @@ We tried out TypeScript for this application and really liked the benefits of st
 
 ## Authors
 
-Josh Pfefferkorn
-Jack Gnibus
+Josh Pfefferkorn and Jack Gnibus
 
 ## Next Steps
 
 - Course autocomplete
-- How to use tour
+- How-to-use tour
 - Export directly to calendar application of choice
 - Map functionality? Could be cool
 
 ## Acknowledgments
 
 [React Redux with TypeScript](https://react-redux.js.org/introduction/getting-started)
+
 [ICS NPM Documentation](https://www.npmjs.com/package/ics)
 
-ChatGPT used occassionally for 
+ChatGPT used occassionally for small functions, cited in code
