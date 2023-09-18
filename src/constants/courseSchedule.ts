@@ -1,8 +1,8 @@
 // course times are encoded as [startHour, startMinute, durationHour, durationMinute]
 // check these over
-import { Period } from '../types';
+import { IPeriod } from '../types';
 
-const courseSchedule: { [key: string]: { class: Period; xHour: Period } } = {
+const courseSchedule: { [key: string]: { class: IPeriod; xHour: IPeriod } } = {
   '8S': {
     class: {
       time: [7, 45, 0, 50],
