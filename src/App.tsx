@@ -234,9 +234,11 @@ function App() {
       <Divider />
 
       <div id="download-container">
-        <Checkbox checked={includeXHour} onChange={onChange}>
-          Include X-hours
-        </Checkbox>
+        <div>
+          <Checkbox checked={includeXHour} onChange={onChange}>
+            Include X-hours
+          </Checkbox>
+        </div>
         <div>
           <Button type="primary" onClick={() => handleDownload()}>Download calendar</Button>
 
