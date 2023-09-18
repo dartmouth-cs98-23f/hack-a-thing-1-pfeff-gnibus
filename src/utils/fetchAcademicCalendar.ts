@@ -1,6 +1,5 @@
 import axios from 'axios';
-import { IClass, IPeriod, ICalendarYear } from '../types';
-import courseSchedule from '../constants/courseSchedule';
+import { ICalendarYear } from '../types';
 
 export default async function fetchAcademicCalendar(): Promise<ICalendarYear> {
 
@@ -42,7 +41,7 @@ export default async function fetchAcademicCalendar(): Promise<ICalendarYear> {
       spring: [new Date(), new Date()],
     }
 
-    termElements.forEach((element, index) => {
+    termElements.forEach((element) => {
       const text = element.textContent;
       terms.forEach((term) => {
         if (text?.includes(`${term} term classes begin`)) {

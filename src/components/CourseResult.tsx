@@ -2,7 +2,7 @@ import { IClass } from "../types";
 import { Table, Space, ConfigProvider, Empty } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 
-import { useAppSelector, useAppDispatch } from "../hooks";
+import { useAppDispatch } from "../hooks";
 
 import { addClass } from "./classesSlice";
 

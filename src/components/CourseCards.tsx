@@ -1,4 +1,3 @@
-import { IClass } from "../types";
 import { Card, Empty } from 'antd';
 import './components.scss';
 import { useAppDispatch, useAppSelector } from "../hooks";
