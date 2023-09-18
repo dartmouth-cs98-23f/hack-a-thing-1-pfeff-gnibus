@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { IClass, Period } from '../types';
+import { IClass, IPeriod } from '../types';
+import { nanoid } from 'nanoid';
 import courseSchedule from '../constants/courseSchedule';
 
 export default async function fetchCourseInfo(subj: string, crsenum: string): Promise<IClass[]> {
@@ -27,7 +28,7 @@ export default async function fetchCourseInfo(subj: string, crsenum: string): Pr
 
     const rows = dataTableDiv.querySelectorAll('table tr');
 
-    const results:IClass[] = []
+    const results: IClass[] = []
 
     const seenPeriodCodes = new Set();
 
@@ -50,10 +51,11 @@ export default async function fetchCourseInfo(subj: string, crsenum: string): Pr
         const room = roomDiv?.textContent?.trim() || '';
         const location = `${building} ${room}`;
 
-        const main: Period = courseSchedule[periodCode].class;
-        const xHour: Period = courseSchedule[periodCode].xHour;
+        const main: IPeriod = courseSchedule[periodCode].class;
+        const xHour: IPeriod = courseSchedule[periodCode].xHour;
 
         const course = {
+          id: nanoid(10),
           subjectCode: subj,
           courseNum: crsenum,
           classTitle: titleDiv?.textContent?.trim() || '',
@@ -63,7 +65,7 @@ export default async function fetchCourseInfo(subj: string, crsenum: string): Pr
           main: main,
           xHour: xHour,
         };
-      
+
         results.push(course);
         seenPeriodCodes.add(periodCode);
       }

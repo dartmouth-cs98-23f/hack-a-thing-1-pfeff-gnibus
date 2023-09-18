@@ -28,13 +28,35 @@ app.post('/fetchPeriodCodesProxy', async (req, res) => {
       req.body,
       config
     );
-
+    x
     res.json(response.data);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error fetching data' });
   }
 });
+
+app.post('/fetchAcademicCalendar', async (req, res) => {
+  try {
+    const headers = {
+      'Content-Type':
+        'multipart/form-data; boundary=--------------------------374316506716627533073844',
+    };
+    const config = {
+      headers,
+    };
+
+    const response = await axios.get(
+      `https://www.dartmouth.edu/reg/calendar/academic/${req.body.yearCode}.html`,
+      config
+    );
+
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Error fetching data' });
+  }
+})
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

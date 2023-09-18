@@ -1,30 +1,28 @@
-import { IClass } from "../types";
 import { Card, Empty } from 'antd';
 import './components.scss';
+import { useAppDispatch, useAppSelector } from "../hooks";
+import { removeClass } from "./classesSlice";
 
-interface CourseCardProps {
-  courses: IClass[];
-  deleteCourse: (course: IClass) => void;
-}
-
-function CourseCards({ courses, deleteCourse }: CourseCardProps): JSX.Element {
+function CourseCards(): JSX.Element {
+  const classes = useAppSelector((state) => state.classes.classesList);
+  const dispatch = useAppDispatch();
   return (
     <>
-      {courses.length === 0 && <Empty className='empty-courses' image={Empty.PRESENTED_IMAGE_SIMPLE} description="No courses added yet"/>}
+      {classes.length === 0 && <Empty className='empty-courses' image={Empty.PRESENTED_IMAGE_SIMPLE} description="No courses added yet" />}
       <div className="course-cards">
-        {courses &&
-          courses.map((course) => (
-          <Card
-            key={course.periodCode}
-            bodyStyle={{ paddingTop: '1rem', paddingBottom: '1rem'}}
-            title={course.classTitle}
-            extra={<a onClick={ () => deleteCourse(course)}>Remove</a>}
-            style={{ width: 300 }}
-          >
-            <p><span className="bold">Period: </span>{course.periodCode}</p>
-            <p><span className="bold">Location: </span>{course.location}</p>
-            <p><span className="bold">Instructor: </span>{course.instructor}</p>
-          </Card>
+        {classes &&
+          classes.map((course) => (
+            <Card
+              key={course.periodCode}
+              bodyStyle={{ paddingTop: '1rem', paddingBottom: '1rem' }}
+              title={course.classTitle}
+              extra={<a onClick={() => dispatch(removeClass(course.id))}>Remove</a>}
+              style={{ width: 300 }}
+            >
+              <p><span className="bold">Period: </span>{course.periodCode}</p>
+              <p><span className="bold">Location: </span>{course.location}</p>
+              <p><span className="bold">Instructor: </span>{course.instructor}</p>
+            </Card>
           ))}
       </div>
     </>
