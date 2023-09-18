@@ -49,7 +49,7 @@ Josh Pfefferkorn and Jack Gnibus
 
 [React Redux with TypeScript](https://react-redux.js.org/introduction/getting-started)
 
-[Ant Design Component Library]([https://ant.design/](https://ant.design/components/overview/))
+[Ant Design Component Library](https://ant.design/components/overview/)
 
 [ICS NPM Documentation](https://www.npmjs.com/package/ics)
 
