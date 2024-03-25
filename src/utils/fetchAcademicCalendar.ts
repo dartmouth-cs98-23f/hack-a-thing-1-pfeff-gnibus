@@ -1,4 +1,4 @@
-import axios from 'axios';
+// import axios from 'axios';
 import { ICalendarYear } from '../types';
 
 export default async function fetchAcademicCalendar(): Promise<ICalendarYear> {
@@ -15,55 +15,70 @@ export default async function fetchAcademicCalendar(): Promise<ICalendarYear> {
 
 
   //const url = 'http://localhost:3000/fetchAcademicCalendar';
-  const url = 'https://corsproxy.io/?' + encodeURIComponent(`https://www.dartmouth.edu/reg/calendar/academic/${yearCode}.html`);
+  //const url = 'https://corsproxy.io/?' + encodeURIComponent(`https://www.dartmouth.edu/reg/calendar/academic/${yearCode}.html`);
 
   //const data = new URLSearchParams();
 
-  try {
-    //const response = await axios.post(url, data);
-    const response = await axios.get(url);
-    const htmlString = response.data;
+  // hardcoding dates because corsproxy.io is not working
+  // here, spring is 23_24, the others are 24_25
 
-    // used chatGPT to parse html
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(htmlString, 'text/html');
-    const termElements = doc.querySelectorAll('div.b6 ul[type="disc"] li');
+  const dates: ICalendarYear = {
+    summer: [new Date('2024-06-20'), new Date('2024-08-27')] as [Date, Date],
+    fall: [new Date('2024-09-16'), new Date('2024-11-27')] as [Date, Date],
+    winter: [new Date('2025-01-06'), new Date('2025-03-14')] as [Date, Date],
+    spring: [new Date('2024-03-25'), new Date('2024-06-04')] as [Date, Date],
+  };  
 
-    if (termElements.length === 0) {
-      throw new Error('Error selecting date elements');
-    }
-
-    const terms = ['Summer', 'Fall', 'Winter', 'Spring']
-    const dates: ICalendarYear = {
-      summer: [new Date(), new Date()],
-      fall: [new Date(), new Date()],
-      winter: [new Date(), new Date()],
-      spring: [new Date(), new Date()],
-    }
-
-    termElements.forEach((element) => {
-      const text = element.textContent;
-      terms.forEach((term) => {
-        if (text?.includes(`${term} term classes begin`)) {
-          const startDateMatch = text.split(' -- ');
-          if (startDateMatch) {
-            dates[term.toLocaleLowerCase() as keyof ICalendarYear][0] = new Date(startDateMatch[0]);
-          } else {
-            throw new Error(`Error parsing start date for ${term}`)
-          }
-        } else if (text?.includes(`${term} term classes end`)) {
-          const endDateMatch = text.split(' -- ');
-          if (endDateMatch) {
-            dates[term.toLocaleLowerCase() as keyof ICalendarYear][1] = new Date(endDateMatch[0]);
-          } else {
-            throw new Error(`Error parsing end date for ${term}`)
-          }
-        }
-      });
-    });
-    return dates;
-
-  } catch (error) {
-    throw new Error(`Error building calendar: ${error}`);
-  }
+  return dates;
 }
+
+
+
+//   try {
+//     //const response = await axios.post(url, data);
+//     const response = await axios.get(url);
+//     const htmlString = response.data;
+
+//     // used chatGPT to parse html
+//     const parser = new DOMParser();
+//     const doc = parser.parseFromString(htmlString, 'text/html');
+//     const termElements = doc.querySelectorAll('div.b6 ul[type="disc"] li');
+
+//     if (termElements.length === 0) {
+//       throw new Error('Error selecting date elements');
+//     }
+
+//     const terms = ['Summer', 'Fall', 'Winter', 'Spring']
+//     const dates: ICalendarYear = {
+//       summer: [new Date(), new Date()],
+//       fall: [new Date(), new Date()],
+//       winter: [new Date(), new Date()],
+//       spring: [new Date(), new Date()],
+//     }
+
+//     termElements.forEach((element) => {
+//       const text = element.textContent;
+//       terms.forEach((term) => {
+//         if (text?.includes(`${term} term classes begin`)) {
+//           const startDateMatch = text.split(' -- ');
+//           if (startDateMatch) {
+//             dates[term.toLocaleLowerCase() as keyof ICalendarYear][0] = new Date(startDateMatch[0]);
+//           } else {
+//             throw new Error(`Error parsing start date for ${term}`)
+//           }
+//         } else if (text?.includes(`${term} term classes end`)) {
+//           const endDateMatch = text.split(' -- ');
+//           if (endDateMatch) {
+//             dates[term.toLocaleLowerCase() as keyof ICalendarYear][1] = new Date(endDateMatch[0]);
+//           } else {
+//             throw new Error(`Error parsing end date for ${term}`)
+//           }
+//         }
+//       });
+//     });
+//     return dates;
+
+//   } catch (error) {
+//     throw new Error(`Error building calendar: ${error}`);
+//   }
+// }
