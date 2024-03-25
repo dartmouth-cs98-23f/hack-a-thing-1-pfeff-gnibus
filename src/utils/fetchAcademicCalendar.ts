@@ -3,15 +3,15 @@ import { ICalendarYear } from '../types';
 
 export default async function fetchAcademicCalendar(): Promise<ICalendarYear> {
 
-  const date = new Date();
-  let currYear = date.getFullYear() % 100;
+  // const date = new Date();
+  // let currYear = date.getFullYear() % 100;
 
-  let yearCode = ''
-  if ((date.getMonth() === 7 && date.getDate() > 16) || date.getMonth() > 7) { // could maybe do something else for this but checks if after rough gradutation date
-    yearCode = `${currYear}_${currYear + 1}`
-  } else {
-    yearCode = `${currYear - 1}_${currYear}`
-  }
+  // let yearCode = ''
+  // if ((date.getMonth() === 7 && date.getDate() > 16) || date.getMonth() > 7) { // could maybe do something else for this but checks if after rough gradutation date
+  //   yearCode = `${currYear}_${currYear + 1}`
+  // } else {
+  //   yearCode = `${currYear - 1}_${currYear}`
+  // }
 
 
   //const url = 'http://localhost:3000/fetchAcademicCalendar';
